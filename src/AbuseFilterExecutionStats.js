@@ -8,6 +8,20 @@
 ( function ( mw, $ ) {
 'use strict';
 
+/* Translatable strings */
+mw.messages.set( {
+	'afs-page': 'Wikipédia:Filtro_de_edições/Estatísticas',
+	'afs-table-caption': 'Estatísticas sobre o tempo de execução dos filtros de edição',
+	'afs-table-column-filter': 'Filtro',
+	'afs-table-column-actions': 'Ações',
+	'afs-table-column-hits': 'Correspondências',
+	'afs-table-column-percent': '%',
+	'afs-table-column-time': 'Tempo',
+	'afs-table-column-conditions': 'Condições',
+	'afs-link': 'Estatísticas de execução dos filtros',
+	'afs-link-title': 'Gerar uma tabela com estatísticas sobre a execução dos filtros de edição'
+} );
+
 var last = 112,
 	stats = [ [ 'Filtro', 'Estatísticas' ] ];
 
@@ -15,19 +29,31 @@ function run(){
 	var current = 1;
 	function printTable( table ){
 		var i, info,
-			reStats = /Das últimas (.+?) ações, este filtro correspondeu com (.+?) \((.+?)\).\nEm média, o seu tempo de execução é de (.+?), e consome (.+?) condições do seu limite de condições./,
-			result = '{| class="wikitable sortable"' +
-				'\n|+ Estatísticas sobre o tempo de execução dos filtros de edição' +
-				'\n|-\n! Filtro !! Ações !! Correspondências !! % !! Tempo !! Condições';
+			reStats = /\(abusefilter-edit-status: ([\dm,]+), ([\dm,]+), ([\d.,]+), ([\d.,]+), ([\d.,]+)\)/,
+			result = [
+				'{| class="wikitable sortable plainlinks"',
+				'|+ ' + mw.msg( 'afs-table-caption' ),
+				'|-',
+				'! data-sort-type="number" | ' + mw.msg( 'afs-table-column-filter' ),
+				'! data-sort-type="number" | ' + mw.msg( 'afs-table-column-actions' ),
+				'! data-sort-type="number" | ' + mw.msg( 'afs-table-column-hits' ),
+				'! data-sort-type="number" | ' + mw.msg( 'afs-table-column-percent' ),
+				'! data-sort-type="number" | ' + mw.msg( 'afs-table-column-time' ),
+				'! data-sort-type="number" | ' + mw.msg( 'afs-table-column-conditions' )
+			].join( '\n' );
 		for( i = 1; i < table.length; i++ ){
 			info = table[i][1].match( reStats );
 			if( info ) {
-				result += '\n|-\n| ' + table[i][0] +
-					'\n| ' + info[1] +
-					'\n| ' + info[2] +
-					'\n| ' + info[3] +
-					'\n| ' + info[4] +
-					'\n| ' + info[5];
+				result += [
+					'\n|-',
+					'| [[Special:AbuseFilter/' + table[i][0] + '|' + table[i][0] + ']]',
+					'| ' + info[1],
+					'| ' + '[{{fullurl:Special:AbuseLog|wpSearchFilter=' +
+						table[i][0] + '&limit=' + info[2] + '}} ' + info[2] + ']',
+					'| ' + info[3],
+					'| ' + info[4],
+					'| ' + info[5]
+				].join( '\n' );
 			} else {
 				result += '\n|-\n| ' + table[i][0] + '|| || || || || ';
 			}
@@ -41,7 +67,7 @@ function run(){
 	}
 	function getStatsFor( filter ){
 		$.ajax( {
-			url: mw.util.wikiGetlink( 'Especial:Filtro_de_abusos/' + filter )
+			url: mw.util.wikiGetlink( 'Special:AbuseFilter/' + filter ) + '?uselang=qqx'
 		} )
 		.done( function( data ){
 			var $data = $( data ),
@@ -69,13 +95,13 @@ function addAbuseFilterExecutionStatsLink(){
 	$( mw.util.addPortletLink(
 		'p-cactions',
 		'#',
-		'Estatísticas de execução dos filtros',
+		mw.msg( 'afs-link' ),
 		'ca-AbuseFilterExecutionStatsLink',
-		'Gerar uma tabela com estatísticas sobre a execução dos filtros de edição'
+		mw.msg( 'afs-link-title' )
 	) ).click( run );
 }
 
-if ( mw.config.get( 'wgPageName' ) === 'Wikipédia:Filtro_de_edições/Estatísticas' ) {
+if ( mw.config.get( 'wgPageName' ) === mw.msg( 'afs-page' ) ) {
 	$( addAbuseFilterExecutionStatsLink );
 }
 
