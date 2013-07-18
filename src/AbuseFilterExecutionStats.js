@@ -22,8 +22,7 @@ mw.messages.set( {
 	'afs-link-title': 'Gerar uma tabela com estatísticas sobre a execução dos filtros de edição'
 } );
 
-var last = 112,
-	stats = [ [ 'Filtro', 'Estatísticas' ] ];
+var last, stats = [ [ 'Filtro', 'Estatísticas' ] ];
 
 function run(){
 	var current = 1;
@@ -64,6 +63,7 @@ function run(){
 			.append(
 				$( '<pre>' ).text( result )
 			);
+		$.removeSpinner( 'af-status-spinner' );
 	}
 	function getStatsFor( filter ){
 		$.ajax( {
@@ -86,9 +86,23 @@ function run(){
 				current += 1;
 				getStatsFor( current );
 			}
+		} )
+		.fail( function(){
+			$.removeSpinner( 'af-status-spinner' );
 		} );
 	}
-	getStatsFor( current );
+	$( '#firstHeading' ).injectSpinner( 'af-status-spinner' );
+	( new mw.Api() ).get( {
+		// /w/api.php?action=query&list=abusefilters&format=json&abflimit=10&abfprop=id
+		action: 'query',
+		list: 'abusefilters',
+		abflimit: 'max',
+		abfprop: 'id'
+	} )
+	.done( function ( data ) {
+		last = data.query.abusefilters.length;
+		getStatsFor( current );
+	} );
 }
 
 function addAbuseFilterExecutionStatsLink(){
@@ -98,7 +112,9 @@ function addAbuseFilterExecutionStatsLink(){
 		mw.msg( 'afs-link' ),
 		'ca-AbuseFilterExecutionStatsLink',
 		mw.msg( 'afs-link-title' )
-	) ).click( run );
+	) ).click( function(){
+		mw.loader.using( [ 'mediawiki.api.edit', 'jquery.spinner' ], run );
+	} );
 }
 
 if ( mw.config.get( 'wgPageName' ) === mw.msg( 'afs-page' ) ) {
