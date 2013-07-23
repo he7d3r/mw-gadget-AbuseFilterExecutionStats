@@ -10,7 +10,6 @@
 
 /* Translatable strings */
 mw.messages.set( {
-	'afs-page': 'Wikipédia:Filtro_de_edições/Estatísticas',
 	'afs-table-caption': 'Estatísticas sobre o tempo de execução dos filtros de edição',
 	'afs-table-column-filter': 'Filtro',
 	'afs-table-column-actions': 'Ações',
@@ -117,7 +116,7 @@ function addAbuseFilterExecutionStatsLink(){
 	} );
 }
 
-if ( mw.config.get( 'wgPageName' ) === mw.msg( 'afs-page' ) ) {
+if ( mw.config.get( 'wgCanonicalSpecialPageName' ) === 'AbuseFilter' ) {
 	$( addAbuseFilterExecutionStatsLink );
 }
 
