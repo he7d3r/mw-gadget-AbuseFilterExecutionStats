@@ -3,7 +3,7 @@
  * @author: [[User:Helder.wiki]]
  * @tracking: [[Special:GlobalUsage/User:Helder.wiki/Tools/AbuseFilterExecutionStats.js]] ([[File:User:Helder.wiki/Tools/AbuseFilterExecutionStats.js]])
  */
-/*jshint browser: true, camelcase: true, curly: true, eqeqeq: true, immed: true, latedef: true, newcap: true, noarg: true, noempty: true, nonew: true, quotmark: true, undef: true, unused: true, strict: true, trailing: true, maxlen: 200, evil: true, onevar: true */
+/*jshint browser: true, camelcase: true, curly: true, eqeqeq: true, immed: true, latedef: true, newcap: true, noarg: true, noempty: true, nonew: true, quotmark: true, undef: true, unused: true, strict: true, trailing: true, laxbreak: true, maxlen: 200, evil: true, onevar: true */
 /*global jQuery, mediaWiki */
 ( function ( mw, $ ) {
 'use strict';
@@ -116,7 +116,11 @@ function addAbuseFilterExecutionStatsLink(){
 	} );
 }
 
-if ( mw.config.get( 'wgCanonicalSpecialPageName' ) === 'AbuseFilter' ) {
+if ( mw.config.get( 'wgCanonicalSpecialPageName' ) === 'AbuseFilter'
+	|| ( mw.config.get( 'wgDBname' ) === 'ptwiki'
+		&& mw.config.get( 'wgPageName' ).indexOf( 'Wikipédia:Filtro_de_edições' ) !== -1
+	)
+) {
 	$( addAbuseFilterExecutionStatsLink );
 }
 
