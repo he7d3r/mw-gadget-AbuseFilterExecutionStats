@@ -18,7 +18,9 @@ mw.messages.set( {
 	'afs-table-column-time': 'Tempo',
 	'afs-table-column-conditions': 'Condições',
 	'afs-link': 'Estatísticas de execução dos filtros',
-	'afs-link-title': 'Gerar uma tabela com estatísticas sobre a execução dos filtros de edição'
+	'afs-link-title': 'Gerar uma tabela com estatísticas sobre a execução dos filtros de edição',
+	'afs-getting-data-title': 'Obtendo dados...',
+	'afs-getting-data' : 'Consultando as estatísticas sobre o filtro $1...'
 } );
 
 var last, stats = [ [ 'Filtro', 'Estatísticas' ] ];
@@ -65,6 +67,13 @@ function run(){
 		$.removeSpinner( 'af-status-spinner' );
 	}
 	function getStatsFor( filter ){
+		mw.notify(
+			mw.msg( 'afs-getting-data', filter ),
+			{
+				tag: 'stats',
+				title: mw.msg( 'afs-getting-data-title' )
+			}
+		);
 		$.ajax( {
 			url: mw.util.wikiGetlink( 'Special:AbuseFilter/' + filter ) + '?uselang=qqx'
 		} )
@@ -112,7 +121,12 @@ function addAbuseFilterExecutionStatsLink(){
 		'ca-AbuseFilterExecutionStatsLink',
 		mw.msg( 'afs-link-title' )
 	) ).click( function(){
-		mw.loader.using( [ 'mediawiki.api.edit', 'jquery.spinner' ], run );
+		mw.loader.using( [
+			'mediawiki.api.edit',
+			'jquery.spinner',
+			'mediawiki.notify',
+			'mediawiki.notification'
+		], run );
 	} );
 }
 
