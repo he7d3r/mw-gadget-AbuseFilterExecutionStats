@@ -10,17 +10,17 @@
 
 /* Translatable strings */
 mw.messages.set( {
-	'afs-table-caption': 'Estatísticas sobre o tempo de execução dos filtros de edição',
-	'afs-table-column-filter': 'Filtro',
-	'afs-table-column-actions': 'Ações',
-	'afs-table-column-hits': 'Correspondências',
-	'afs-table-column-percent': '%',
-	'afs-table-column-time': 'Tempo',
-	'afs-table-column-conditions': 'Condições',
-	'afs-link': 'Estatísticas de execução dos filtros',
-	'afs-link-title': 'Gerar uma tabela com estatísticas sobre a execução dos filtros de edição',
-	'afs-getting-data-title': 'Obtendo dados...',
-	'afs-getting-data' : 'Consultando as estatísticas sobre o filtro $1...'
+	'afes-table-caption': 'Estatísticas sobre o tempo de execução dos filtros de edição',
+	'afes-table-column-filter': 'Filtro',
+	'afes-table-column-actions': 'Ações',
+	'afes-table-column-hits': 'Correspondências',
+	'afes-table-column-percent': '%',
+	'afes-table-column-time': 'Tempo',
+	'afes-table-column-conditions': 'Condições',
+	'afes-link': 'Estatísticas de execução dos filtros',
+	'afes-link-title': 'Gerar uma tabela com estatísticas sobre a execução dos filtros de edição',
+	'afes-getting-data-title': 'Obtendo dados...',
+	'afes-getting-data' : 'Consultando as estatísticas sobre o filtro $1...'
 } );
 
 var last, stats = [ [ 'Filtro', 'Estatísticas' ] ];
@@ -32,14 +32,14 @@ function run(){
 			reStats = /\(abusefilter-edit-status: ([\dm,]+), ([\dm,]+), ([\d.,]+), ([\d.,]+), ([\d.,]+)\)/,
 			result = [
 				'{| class="wikitable sortable plainlinks"',
-				'|+ ' + mw.msg( 'afs-table-caption' ),
+				'|+ ' + mw.msg( 'afes-table-caption' ),
 				'|-',
-				'! data-sort-type="number" | ' + mw.msg( 'afs-table-column-filter' ),
-				'! data-sort-type="number" | ' + mw.msg( 'afs-table-column-actions' ),
-				'! data-sort-type="number" | ' + mw.msg( 'afs-table-column-hits' ),
-				'! data-sort-type="number" | ' + mw.msg( 'afs-table-column-percent' ),
-				'! data-sort-type="number" | ' + mw.msg( 'afs-table-column-time' ),
-				'! data-sort-type="number" | ' + mw.msg( 'afs-table-column-conditions' )
+				'! data-sort-type="number" | ' + mw.msg( 'afes-table-column-filter' ),
+				'! data-sort-type="number" | ' + mw.msg( 'afes-table-column-actions' ),
+				'! data-sort-type="number" | ' + mw.msg( 'afes-table-column-hits' ),
+				'! data-sort-type="number" | ' + mw.msg( 'afes-table-column-percent' ),
+				'! data-sort-type="number" | ' + mw.msg( 'afes-table-column-time' ),
+				'! data-sort-type="number" | ' + mw.msg( 'afes-table-column-conditions' )
 			].join( '\n' );
 		for( i = 1; i < table.length; i++ ){
 			info = table[i][1].match( reStats );
@@ -68,10 +68,10 @@ function run(){
 	}
 	function getStatsFor( filter ){
 		mw.notify(
-			mw.msg( 'afs-getting-data', filter ),
+			mw.msg( 'afes-getting-data', filter ),
 			{
 				tag: 'stats',
-				title: mw.msg( 'afs-getting-data-title' )
+				title: mw.msg( 'afes-getting-data-title' )
 			}
 		);
 		$.ajax( {
@@ -117,9 +117,9 @@ function addAbuseFilterExecutionStatsLink(){
 	$( mw.util.addPortletLink(
 		'p-cactions',
 		'#',
-		mw.msg( 'afs-link' ),
+		mw.msg( 'afes-link' ),
 		'ca-AbuseFilterExecutionStatsLink',
-		mw.msg( 'afs-link-title' )
+		mw.msg( 'afes-link-title' )
 	) ).click( function(){
 		mw.loader.using( [
 			'mediawiki.api.edit',
