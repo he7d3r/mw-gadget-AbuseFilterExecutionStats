@@ -75,7 +75,7 @@ function run(){
 			}
 		);
 		$.ajax( {
-			url: mw.util.wikiGetlink( 'Special:AbuseFilter/' + filter ) + '?uselang=qqx'
+			url: mw.util.wikiGetlink( 'Special:AbuseFilter/' + filter, { uselang: 'qqx' } )
 		} )
 		.done( function( data ){
 			var $data = $( data ),
