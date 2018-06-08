@@ -120,7 +120,7 @@
 			mw.msg( 'afes-link-title' )
 		) ).click( function () {
 			mw.loader.using( [
-				'mediawiki.api.edit',
+				'mediawiki.api',
 				'jquery.spinner',
 				'mediawiki.notify',
 				'mediawiki.notification'
