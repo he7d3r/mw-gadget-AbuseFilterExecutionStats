@@ -122,7 +122,6 @@
 			mw.loader.using( [
 				'mediawiki.api',
 				'jquery.spinner',
-				'mediawiki.notify',
 				'mediawiki.notification'
 			], run );
 		} );
